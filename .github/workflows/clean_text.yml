@@ -1,0 +1,29 @@
+name: Run OCR Cleaner
+on: 
+  workflow_dispatch: # This adds a "Play" button so you can start it manually
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Gemini Library
+        run: pip install google-genai
+
+      - name: Run Cleaning Script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python your_script_name.py # Change this to your filename
+
+      - name: Upload Cleaned Result
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-result
+          path: cleaned_full.txt # This makes the file downloadable
